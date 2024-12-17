@@ -323,7 +323,7 @@ const LandingPage = () => {
         </a>
       </div>
       <div className="flex flex-col items-center justify-center px-4 py-6 text-center">
-        {!setupComplete && (
+        {!hasStartedParsing && !setupComplete && (
           <>
             <h1 className="max-w-3xl text-4xl font-bold leading-tight text-gray-900 lg:text-5xl">
               <span className="block text-3xl lg:text-4xl mb-2">

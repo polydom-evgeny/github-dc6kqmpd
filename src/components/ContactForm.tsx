@@ -121,7 +121,6 @@ export function ContactForm({ onSubmit, businessName, businessAddress }: Contact
         <div className="relative">
           <PhoneInput
             country={'us'}
-            preferredCountries={['us', 'ca', 'gb', 'au']}
             enableSearch={false}
             inputProps={{
               name: 'phone',
@@ -168,7 +167,7 @@ export function ContactForm({ onSubmit, businessName, businessAddress }: Contact
               </div>
             </div>
             <span className="text-sm text-gray-600">
-              I agree to the{' '}
+              By clicking "Start Testing" you agree to the{' '}
               <a
                 href="https://polydom.ai/terms-of-service/"
                 target="_blank"
@@ -176,6 +175,16 @@ export function ContactForm({ onSubmit, businessName, businessAddress }: Contact
                 className="text-green-600 hover:text-green-700 inline-flex items-center gap-1 group-hover:underline"
               >
                 Terms of Service
+                <ExternalLink className="h-3 w-3" />
+              </a>
+              {' '}and{' '}
+              <a
+                href="https://polydom.ai/privacy-policy/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-600 hover:text-green-700 inline-flex items-center gap-1 group-hover:underline"
+              >
+                Privacy Policy
                 <ExternalLink className="h-3 w-3" />
               </a>
             </span>
