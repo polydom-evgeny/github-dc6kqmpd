@@ -1,4 +1,3 @@
-import React from 'react';
 import { AlertTriangle, RefreshCw, ExternalLink } from 'lucide-react';
 
 interface ErrorBannerProps {

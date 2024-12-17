@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { PARSING_MESSAGES } from '@/lib/constants';
 
 interface ParsingLoaderProps {

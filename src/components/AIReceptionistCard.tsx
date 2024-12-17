@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { Phone, MapPin } from 'lucide-react';
 
 interface AIReceptionistCardProps {
-  phoneNumber: string;
   businessName: string;
-  businessAddress: string;
   state: string;
   country: string;
   agentId: string;
@@ -18,7 +16,7 @@ declare global {
   }
 }
 
-export function AIReceptionistCard({ phoneNumber, businessName, state, country, agentId, businessAddress }: AIReceptionistCardProps) {
+export function AIReceptionistCard({ businessName, state, country, agentId, }: AIReceptionistCardProps) {
   const [isEnabled, setIsEnabled] = useState(false);
   const [isCallActive, setIsCallActive] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');

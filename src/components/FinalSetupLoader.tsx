@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Bot } from 'lucide-react';
 import { SETUP_MESSAGES } from '@/lib/constants';
 

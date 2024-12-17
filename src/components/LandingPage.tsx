@@ -32,7 +32,6 @@ const LandingPage = () => {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [parserResult, setParserResult] = useState<any>(null);
   const [pendingContactData, setPendingContactData] = useState<any>(null);
-  const [agentPhone, setAgentPhone] = useState<string>('');
   const [agentId, setAgentId] = useState<string>('');
   const [processingError, setProcessingError] = useState(false);
 
@@ -103,7 +102,6 @@ const LandingPage = () => {
         throw new Error('Invalid response from agent creation API');
       }
 
-      setAgentPhone(response.agent.phone);
       setAgentId(response.agent.id);
       setIsSettingUp(false);
       setSetupComplete(true);
@@ -207,7 +205,7 @@ const LandingPage = () => {
           } catch (e) {
             if (line.trim() && !line.includes('"unique_selling_points"')) {
               console.error('Parse error:', e);
-              const error = new Error('Failed to process server response');
+              // const error = new Error('Failed to process server response');
               setProcessingError(true);
               setErrorContext('parsing');
               // Do not throw here to prevent breaking the stream
@@ -469,12 +467,10 @@ const LandingPage = () => {
         {setupComplete && (
           <div className="flex flex-col items-center w-full">
             <AIReceptionistCard
-              phoneNumber={agentPhone}
               businessName={selectedPlace?.name || ''}
               state={selectedPlace?.state || ''}
               country={selectedPlace?.country || ''}
               agentId={agentId}
-              businessAddress={selectedPlace?.formatted_address || ''} // Add fallback empty string
             />
           </div>
         )}
