@@ -1,5 +1,5 @@
 // LandingPage.tsx
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Search, Loader2, X, HelpCircle } from 'lucide-react';
 import {
   usePlacesAutocomplete,
@@ -9,7 +9,6 @@ import { ParsingLoader } from './ParsingLoader';
 import { PropertyCard } from './PropertyCard';
 import { ContactForm } from './ContactForm';
 import { createDemoAgent } from '@/lib/api';
-import { PARSING_MESSAGES } from '@/lib/constants';
 import { FinalSetupLoader } from './FinalSetupLoader';
 import { AIReceptionistCard } from './AIReceptionistCard';
 import { ErrorBanner } from './ErrorBanner';
@@ -18,6 +17,7 @@ const PARSER_API =
   'https://property-parser-no-phone.replit.app/api/parse_property_info_stream';
 
 const LandingPage = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { selectedPlace, error, clearSelection } = usePlacesAutocomplete();
   const [isParsing, setIsParsing] = useState(false);
   const [hasStartedParsing, setHasStartedParsing] = useState(false);
@@ -474,6 +474,7 @@ const LandingPage = () => {
               state={selectedPlace?.state || ''}
               country={selectedPlace?.country || ''}
               agentId={agentId}
+              businessAddress={selectedPlace?.formatted_address || ''} // Add fallback empty string
             />
           </div>
         )}

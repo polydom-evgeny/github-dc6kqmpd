@@ -5,8 +5,42 @@ const GOOGLE_MAPS_API_KEY = 'AIzaSyAjvJulCIKazlyXQYxj7jwnRBvy_WrKjf8';
 
 declare global {
   interface Window {
-    google: any;
+    google: {
+      maps: {
+        places: {
+          Autocomplete: new (
+            input: HTMLInputElement,
+            opts?: google.maps.places.AutocompleteOptions  // Updated this line
+          ) => google.maps.places.Autocomplete;
+        };
+      };
+    };
     initPlacesAutocomplete?: () => void;
+  }
+}
+
+// Add necessary type definitions
+declare namespace google.maps.places {
+  interface Autocomplete {
+    addListener(eventName: string, handler: () => void): void;
+    getPlace(): PlaceResult;
+  }
+  
+  interface AutocompleteOptions {
+    types?: string[];
+    language?: string;
+    fields?: string[];
+  }
+
+  interface PlaceResult {
+    geometry?: any;
+    name: string;
+    formatted_address: string;
+    address_components: Array<{
+      long_name: string;
+      short_name: string;
+      types: string[];
+    }>;
   }
 }
 
@@ -14,6 +48,7 @@ export interface PlaceResult {
   name: string;
   formatted_address: string;
   country: string;
+  state: string;
 }
 
 export function usePlacesAutocomplete() {
