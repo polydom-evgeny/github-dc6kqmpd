@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bot, Clock, Phone, MapPin } from 'lucide-react';
 
 interface AIReceptionistCardProps {
@@ -9,13 +9,106 @@ interface AIReceptionistCardProps {
   country: string;
 }
 
+// Add window type declaration for TypeScript
+declare global {
+  interface Window {
+    chatWidgetConfig?: any;
+    polyCallAPI?: any;
+  }
+}
+
 export function AIReceptionistCard({ phoneNumber, businessName, state, country }: AIReceptionistCardProps) {
+  const [isEnabled, setIsEnabled] = useState(false);
+  const [isCallActive, setIsCallActive] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
   const getLocation = () => {
     return `${state}, ${country === 'United States' ? 'USA' : country}`;
   };
 
+  // Initialize widget
+  useEffect(() => {
+    // Configure widget
+    window.chatWidgetConfig = {
+      staticUrl: 'https://una-call-js.polydom.ai/latest',
+      callRecording: true,
+      agentId: '6720f61cef72f1838a7d6063',
+      stage: false,
+      contextData: {
+        email: 'example@polydom.ai',
+      },
+      enableScreenLock: false,
+      enableCallSound: true,
+      language: 'en',
+    };
+
+    // Create and load script
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.async = true;
+    script.src = window.chatWidgetConfig.staticUrl + '/js/init_script.js?' + new Date().getTime();
+
+    script.onerror = () => {
+      console.error('Failed to load init_script.js');
+      setErrorMsg('Failed to load call functionalities. Please try again later.');
+      setIsEnabled(false);
+    };
+
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  // Setup event listeners
+  useEffect(() => {
+    const handlePolyStatus = (event: CustomEvent) => {
+      const { status, message } = event.detail;
+      if (status === 'success') {
+        setIsEnabled(true);
+        setErrorMsg('');
+      } else {
+        setIsEnabled(false);
+        setErrorMsg(message || 'Failed to initialize call system');
+      }
+    };
+
+    const handleStartCall = () => {
+      setIsCallActive(true);
+    };
+
+    const handleEndCall = () => {
+      setIsCallActive(false);
+    };
+
+    const handleCallError = (event: CustomEvent) => {
+      const message = event.detail.error || event.detail.message;
+      setErrorMsg(message);
+      setIsCallActive(false);
+    };
+
+    window.addEventListener('polyStatus', handlePolyStatus as EventListener);
+    window.addEventListener('polyStartCall', handleStartCall);
+    window.addEventListener('polyEndCall', handleEndCall);
+    window.addEventListener('polyCallError', handleCallError as EventListener);
+
+    return () => {
+      window.removeEventListener('polyStatus', handlePolyStatus as EventListener);
+      window.removeEventListener('polyStartCall', handleStartCall);
+      window.removeEventListener('polyEndCall', handleEndCall);
+      window.removeEventListener('polyCallError', handleCallError as EventListener);
+    };
+  }, []);
+
   const handleCall = () => {
-    window.location.href = `tel:${phoneNumber}`;
+    if (!isEnabled || !window.polyCallAPI) return;
+
+    if (isCallActive) {
+      window.polyCallAPI.endCall();
+    } else {
+      window.polyCallAPI.makeCall();
+    }
   };
 
   return (
@@ -36,25 +129,42 @@ export function AIReceptionistCard({ phoneNumber, businessName, state, country }
       </h1>
 
       <div className="w-full max-w-md mx-auto bg-white rounded-lg shadow-lg px-8 pb-8">
-        <h2 className="text-2xl font-bold text-center" style={{ color: 'rgb(35, 35, 35)' }}>
+        <h2 className="text-2xl font-bold text-center text-gray-900">
           Call Now to Start Conversation
         </h2>
 
         <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-          <div className="flex items-center justify-center gap-3">
-            <button 
-              onClick={handleCall}
-              className="relative group cursor-pointer bg-transparent border-0 p-0"
-            >
-              <Phone className="w-5 h-5 text-green-600 group-hover:scale-105 transition-transform duration-300" />
-              <div className="absolute -inset-2 bg-green-500/10 rounded-full animate-pulse"></div>
-            </button>
-            <span className="text-xl font-semibold text-gray-900">
-              {phoneNumber}
-            </span>
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex items-center justify-center gap-3">
+              <button 
+                onClick={handleCall}
+                disabled={!isEnabled}
+                className={`relative flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-300
+                  ${!isEnabled 
+                    ? 'bg-gray-400 cursor-not-allowed opacity-60' 
+                    : isCallActive
+                    ? 'bg-red-600 hover:bg-red-700'
+                    : 'bg-green-500 hover:bg-green-600'
+                  } text-white`}
+              >
+                <Phone className="w-5 h-5" />
+                <span>{isCallActive ? 'End Call' : 'Call'}</span>
+                {isEnabled && !isCallActive && (
+                  <div className="absolute -inset-1 bg-green-500/20 rounded-lg animate-pulse" />
+                )}
+              </button>
+              <span className="text-xl font-semibold text-gray-900">
+                {phoneNumber}
+              </span>
+            </div>
+            
+            {errorMsg && (
+              <div className="text-red-600 font-medium text-center">
+                {errorMsg}
+              </div>
+            )}
           </div>
         </div>
-
       </div>
     </div>
   );
