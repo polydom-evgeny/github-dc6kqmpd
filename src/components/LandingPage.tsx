@@ -33,6 +33,7 @@ const LandingPage = () => {
   const [parserResult, setParserResult] = useState<any>(null);
   const [pendingContactData, setPendingContactData] = useState<any>(null);
   const [agentPhone, setAgentPhone] = useState<string>('');
+  const [agentId, setAgentId] = useState<string>('');
   const [processingError, setProcessingError] = useState(false);
 
   // New state to track where the error occurred
@@ -103,6 +104,7 @@ const LandingPage = () => {
       }
 
       setAgentPhone(response.agent.phone);
+      setAgentId(response.agent.id);
       setIsSettingUp(false);
       setSetupComplete(true);
       setProcessingError(false);
@@ -471,6 +473,7 @@ const LandingPage = () => {
               businessName={selectedPlace?.name || ''}
               state={selectedPlace?.state || ''}
               country={selectedPlace?.country || ''}
+              agentId={agentId}
             />
           </div>
         )}

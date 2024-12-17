@@ -7,6 +7,7 @@ interface AIReceptionistCardProps {
   businessAddress: string;
   state: string;
   country: string;
+  agentId: string;
 }
 
 // Add window type declaration for TypeScript
@@ -17,7 +18,7 @@ declare global {
   }
 }
 
-export function AIReceptionistCard({ phoneNumber, businessName, state, country }: AIReceptionistCardProps) {
+export function AIReceptionistCard({ phoneNumber, businessName, state, country, agentId }: AIReceptionistCardProps) {
   const [isEnabled, setIsEnabled] = useState(false);
   const [isCallActive, setIsCallActive] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -32,8 +33,8 @@ export function AIReceptionistCard({ phoneNumber, businessName, state, country }
     window.chatWidgetConfig = {
       staticUrl: 'https://una-call-js.polydom.ai/latest',
       callRecording: true,
-      agentId: '6720f61cef72f1838a7d6063',
-      stage: false,
+      agentId: agentId,
+      stage: true,
       contextData: {
         email: 'example@polydom.ai',
       },
@@ -153,9 +154,6 @@ export function AIReceptionistCard({ phoneNumber, businessName, state, country }
                   <div className="absolute -inset-1 bg-green-500/20 rounded-lg animate-pulse" />
                 )}
               </button>
-              <span className="text-xl font-semibold text-gray-900">
-                {phoneNumber}
-              </span>
             </div>
             
             {errorMsg && (
