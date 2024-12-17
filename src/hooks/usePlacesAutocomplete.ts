@@ -52,7 +52,7 @@ export interface PlaceResult {
 }
 
 export function usePlacesAutocomplete() {
-  const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
+  const [, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [selectedPlace, setSelectedPlace] = useState<PlaceResult | null>(null);
   const [searchInput, setSearchInput] = useState<HTMLInputElement | null>(null);
   const [error, setError] = useState<string | null>(null);
