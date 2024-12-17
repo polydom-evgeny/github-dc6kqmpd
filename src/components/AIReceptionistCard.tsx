@@ -55,23 +55,6 @@ export function AIReceptionistCard({ phoneNumber, businessName, state, country }
           </div>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-4 text-center">
-          <div className="p-3 bg-gray-50 rounded-lg">
-            <Clock className="w-5 h-5 mx-auto text-gray-600" />
-            <p className="mt-2 text-sm text-gray-600">Available 24/7</p>
-          </div>
-          <div className="p-3 bg-gray-50 rounded-lg">
-            <Bot className="w-5 h-5 mx-auto text-gray-600" />
-            <p className="mt-2 text-sm text-gray-600">Instant Response</p>
-          </div>
-        </div>
-        
-
-        <div className="mt-6 pt-6 border-t border-gray-100 text-center">
-          <p className="text-sm text-gray-500">
-            Your AI Employee is fully trained and ready to handle guest inquiries professionally
-          </p>
-        </div>
       </div>
     </div>
   );
