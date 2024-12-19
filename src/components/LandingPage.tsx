@@ -1,6 +1,6 @@
 // LandingPage.tsx
 import { useState, useEffect, useRef } from 'react';
-import { Search, Loader2, X, HelpCircle } from 'lucide-react';
+import { Search, Loader2, X } from 'lucide-react';
 import {
   usePlacesAutocomplete,
   type PlaceResult,
