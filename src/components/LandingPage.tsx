@@ -377,7 +377,7 @@ const LandingPage = () => {
                 )}
 
                 {/* Separate group for HelpCircle to prevent search input from affecting it */}
-                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                {/* <div className="absolute right-3 top-1/2 -translate-y-1/2">
                   <div className="relative group">
                     <button
                       type="button"
@@ -408,7 +408,7 @@ const LandingPage = () => {
                       hospitality market
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 <input
                   id="search-input"
